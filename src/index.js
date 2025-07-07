@@ -25,7 +25,7 @@ connectDB()
 
 
 
-
+// db connection can go wrong so, use try catch and db is in another continent thus it takes time, so use async await.
 /*
 import express from 'express'
 const app = express()

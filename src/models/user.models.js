@@ -37,7 +37,7 @@ const userSchema = new Schema({
     }],
     password: {
         type: String,
-        required: [true, 'Password is required'],
+        required: [true, 'Password is required'],  // custom error message, can be given in any 'required' field.
     },
     refreshToken: {
         type: String,
@@ -47,7 +47,7 @@ const userSchema = new Schema({
 
 
 userSchema.pre("save", async function (next){  // not used arrow function because arro function does not have 'this' reference (here userSchema's reference is needed)
-    if( !this.isModified("password") ) return next()
+    if( !this.isModified("password") ) return next()  // modify password only if password is changed while saving and not anything else.
 
     this.password = bcrypt.hash(this.password, 10)
     next()
