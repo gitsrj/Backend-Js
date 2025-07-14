@@ -1,5 +1,5 @@
 import { asyncHandler } from "../utils/asyncHandler.js";  // because of this we don't need to put everything in async await or try catch (higher order function)
-import ApiError from "../utils/ApiError.js"
+import {ApiError} from "../utils/ApiError.js"
 import {User} from "../models/user.models.js"
 import { uploadOnCloudinary } from "../utils/cloudinary.js";
 import { ApiResponse } from "../utils/ApiResponse.js";
@@ -18,7 +18,7 @@ const registerUser = asyncHandler( async (req, res) => {
 
 
     const { fullName, email, username, password } = req.body
-    console.log("email: ", email);
+    // console.log("Req.body : ", req.body);
 
 
     // if(fullName === ""){
@@ -31,7 +31,7 @@ const registerUser = asyncHandler( async (req, res) => {
     }
 
     
-    const existedUser = User.findOne({
+    const existedUser = await User.findOne({
         $or: [{ username }, { email }]
     })
 
@@ -41,7 +41,14 @@ const registerUser = asyncHandler( async (req, res) => {
 
     // req.files is given by multer, then middleware "uploads" avatar, out of its multiple properties we take the first i.e. 0th index in its array
     const avatarLocalPath = req.files?.avatar[0]?.path  // '?' means checking if they exist or not.
-    const coverImageLocalPath = req.files?.coverImage[0]?.path
+    // const coverImageLocalPath = req.files?.coverImage[0]?.path
+    // console.log("Req.files : ",req.files)
+
+    let coverImageLocalPath;
+    
+    if (req.files && Array.isArray(req.files.coverImage) && req.files.coverImage.length > 0) {
+        coverImageLocalPath = req.files.coverImage[0].path;
+    }
 
     if (!avatarLocalPath) {
         throw new ApiError(400, "Avatar file is required")
@@ -65,7 +72,7 @@ const registerUser = asyncHandler( async (req, res) => {
     })
 
     const createdUser = await User.findById(user._id).select(  // by default every field is selected so we write "-xyz" to deselect it.
-        "-password -refreshToken"
+        "-password -refreshToken"  // this will not be visible in postman (after creation)
     )
 
     if(!createdUser) {
