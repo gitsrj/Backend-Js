@@ -12,7 +12,7 @@ app.use(cors({
 app.use(express.json({limit: "16kb"}))
 app.use(express.urlencoded({extended: true, limit:"16kb"}))
 app.use(express.static("public"))  // incase we have to store some assets then we can store it here.
-app.use(cookieParser())
+app.use(cookieParser())  // gives access of cookies to req and res
 
 
 //routes import
