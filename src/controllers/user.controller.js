@@ -103,7 +103,7 @@ const registerUser = asyncHandler( async (req, res) => {
 
             // postman expects the status is received through res.status
     return res.status(201).json(
-        new ApiResponse(200, createdUser, "User registered successfully")  // created a obj of ApiResponse class
+        new ApiResponse(201, createdUser, "User registered successfully")  // created a obj of ApiResponse class
     )
 
 
@@ -230,7 +230,7 @@ const refreshAccessToken = asyncHandler(async (req, res) => {
             secure: true
         }
     
-        const {accessToken, newRefreshToken} = await generateAccessAndRefereshTokens(user._id) // new token generated and set in cookies as well
+        const {accessToken, newRefreshToken} = await generateAccessAndRefreshTokens(user._id) // new token generated and set in cookies as well
     
         return res
         .status(200)
