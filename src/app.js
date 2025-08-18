@@ -16,6 +16,7 @@ app.use(cookieParser())  // gives access of cookies to req and res
 
 
 //routes import
+import healthCheckRouter from "./routes/healthcheck.routes.js"
 import userRouter from './routes/user.routes.js';
 import videoRouter from './routes/video.routes.js';
 import playlistRouter from "./routes/playlist.routes.js";
@@ -27,6 +28,7 @@ import dashboardRouter from "./routes/dashboard.routes.js"
 
 
 // routes declaration
+app.use("/api/v1/healthcheck", healthCheckRouter)
 app.use("/api/v1/users", userRouter)  // http://localhost:8000/api/v1/users/register
 app.use("/api/v1/videos", videoRouter)
 app.use("/api/v1/playlist", playlistRouter)
